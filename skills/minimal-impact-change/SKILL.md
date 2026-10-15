@@ -6,18 +6,18 @@ hooks:
     - matcher: "Edit|Write|MultiEdit|NotebookEdit|Bash"
       hooks:
         - type: command
-          command: node "$HOME/.claude/skills/minimal-impact-change/hooks/mic-hook.js" pre
+          command: node "${CLAUDE_PLUGIN_ROOT}/skills/minimal-impact-change/hooks/mic-hook.js" pre
           timeout: 10
   PostToolUse:
     - matcher: "Edit|Write|MultiEdit|NotebookEdit"
       hooks:
         - type: command
-          command: node "$HOME/.claude/skills/minimal-impact-change/hooks/mic-hook.js" post
+          command: node "${CLAUDE_PLUGIN_ROOT}/skills/minimal-impact-change/hooks/mic-hook.js" post
           timeout: 10
   Stop:
     - hooks:
         - type: command
-          command: node "$HOME/.claude/skills/minimal-impact-change/hooks/mic-hook.js" stop
+          command: node "${CLAUDE_PLUGIN_ROOT}/skills/minimal-impact-change/hooks/mic-hook.js" stop
           timeout: 20
 ---
 
@@ -38,7 +38,7 @@ Guard hooks are now active for the rest of this session (see "What the hooks do"
 For nontrivial work, state a short change plan before editing: files to change and why each is necessary, what stays unchanged, and how you will verify. Then declare it so the hooks can check it:
 
 ```
-node "$HOME/.claude/skills/minimal-impact-change/hooks/mic-hook.js" scope set <file-or-glob> ...
+node "${CLAUDE_PLUGIN_ROOT}/skills/minimal-impact-change/hooks/mic-hook.js" scope set <file-or-glob> ...
 ```
 
 Proceed without waiting for approval when the change is clearly authorized. Stop and ask only for material scope expansion, destructive operations, or a breaking change the request did not authorize.

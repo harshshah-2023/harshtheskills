@@ -1,0 +1,13 @@
+{
+  "name": "minimal-impact-change",
+  "version": "1.0.0",
+  "description": "Surgical, backward-compatible code changes: scope plan, targeted edits, focused verification, final impact audit, plus guard hooks that block or flag risky edits.",
+  "author": {
+    "name": "Harsh Shah"
+  },
+  "homepage": "https://github.com/harshshah-2023/harshtheskills",
+  "repository": "https://github.com/harshshah-2023/harshtheskills",
+  "license": "MIT",
+  "keywords": ["skills", "minimal-change", "code-quality", "hooks", "refactoring", "safety"],
+  "skills": ["./skills/minimal-impact-change"]
+}

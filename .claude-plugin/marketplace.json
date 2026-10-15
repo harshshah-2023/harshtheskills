@@ -1,0 +1,17 @@
+{
+  "name": "harshtheskills",
+  "owner": { "name": "Harsh Shah" },
+  "metadata": { "description": "Harsh Shah's Claude Code skills" },
+  "plugins": [
+    {
+      "name": "minimal-impact-change",
+      "source": "./",
+      "description": "Surgical, backward-compatible code changes: scope plan, targeted edits, focused verification, final impact audit, plus guard hooks that block or flag risky edits.",
+      "version": "1.0.0",
+      "category": "development",
+      "homepage": "https://github.com/harshshah-2023/harshtheskills",
+      "repository": "https://github.com/harshshah-2023/harshtheskills",
+      "license": "MIT"
+    }
+  ]
+}

@@ -2,8 +2,10 @@
 
 A Claude Code skill that makes code changes surgical: the smallest correct, complete, backward-compatible change, with guard hooks that enforce the objective parts. This README is for humans. Claude reads `SKILL.md`.
 
+Install instructions are in the [repository README](../../README.md): as a plugin (`/plugin install minimal-impact-change@harshtheskills` after `/plugin marketplace add harshshah-2023/harshtheskills`), or by copying with `node install.js`.
+
 ```
-~/.claude/skills/minimal-impact-change/
+minimal-impact-change/
 ├── SKILL.md                              workflow + frontmatter hooks (Claude reads this)
 ├── README.md                             this file
 ├── hooks/mic-hook.js                     single zero-dependency Node hook runner (pre | post | stop | scope)
@@ -28,7 +30,7 @@ Requirements: `node` (v16 or later) and `git` on PATH. Works on Windows (Git Bas
 
 **Hook scope.** The hooks in `SKILL.md` frontmatter are *skill-scoped*: Claude Code registers them only when the skill is invoked, and they stay active for the rest of that session. Nothing is installed globally by default. If you opt into `global-hooks.settings.json`, the same script runs in every session. In that case skill-scoped copies would run a second time, so remove the `hooks:` block from `SKILL.md` to avoid duplicate advisories.
 
-Hook commands use the path `$HOME/.claude/skills/minimal-impact-change/...`, because `${CLAUDE_SKILL_DIR}` is not expanded inside hook commands (verified on Claude Code 2.1.300). If you move the skill, update those paths in `SKILL.md` (and `global-hooks.settings.json` if you use it) **before** the next session: when the script cannot be found, or `node` is not on PATH, Claude Code reports a hook error and blocks every Edit/Write until it is fixed (observed on 2.1.300). The script itself fails open on any internal error; only a missing script or missing `node` can block you.
+**Hook paths.** In `SKILL.md` the hook commands reference `${CLAUDE_PLUGIN_ROOT}/skills/minimal-impact-change/hooks/mic-hook.js`. Claude Code fills in `${CLAUDE_PLUGIN_ROOT}` for plugin installs (verified on 2.1.300); `${CLAUDE_SKILL_DIR}` is *not* expanded in hook commands, which is why the manual installer (`install.js`) rewrites the paths to the absolute install folder instead. If you move a manually installed copy, update those paths in `SKILL.md` **before** the next session: when the script cannot be found, or `node` is not on PATH, Claude Code reports a hook error and blocks every Edit/Write until it is fixed. The script itself fails open on any internal error; only a missing script or missing `node` can block you.
 
 ## What is enforced vs. instructed
 
@@ -58,10 +60,12 @@ Patterns without `/` match a file name at any depth. `protectedMode` is `deny` (
 Claude declares the planned files for nontrivial work:
 
 ```
-node "$HOME/.claude/skills/minimal-impact-change/hooks/mic-hook.js" scope set src/auth/login.ts "src/auth/login.test.ts"
-node ".../mic-hook.js" scope add <file>     # extend when genuinely needed
-node ".../mic-hook.js" scope show | clear
+node "<skill-dir>/hooks/mic-hook.js" scope set src/auth/login.ts "src/auth/login.test.ts"
+node "<skill-dir>/hooks/mic-hook.js" scope add <file>     # extend when genuinely needed
+node "<skill-dir>/hooks/mic-hook.js" scope show | clear
 ```
+
+(`SKILL.md` gives Claude the real path. The hook auto-approves this command, so it causes no permission prompt.)
 
 The scope is kept per repository for 12 hours. Edits outside it get an advisory; finishing with out-of-scope changes is blocked once.
 

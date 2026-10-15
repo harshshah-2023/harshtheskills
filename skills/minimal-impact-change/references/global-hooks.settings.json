@@ -1,0 +1,40 @@
+{
+  "_comment": "Optional: run the guard hooks in EVERY session, not only when the skill is invoked. Replace <SKILL_DIR> with the installed skill folder (plugin: the path shown by `claude plugin details minimal-impact-change@harshtheskills`, under skills/minimal-impact-change; manual: the folder install.js printed). Merge the `hooks` object into ~/.claude/settings.json, and remove the `hooks:` block from SKILL.md to avoid running them twice.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"<SKILL_DIR>/hooks/mic-hook.js\" pre",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"<SKILL_DIR>/hooks/mic-hook.js\" post",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"<SKILL_DIR>/hooks/mic-hook.js\" stop",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}
